@@ -16,7 +16,6 @@ while (have_posts()) {
     </div>
 
     <div class="container container--narrow page-section">
-
         <?php
         $parent_post_id = wp_get_post_parent_id(get_the_ID());
 
@@ -29,15 +28,30 @@ while (have_posts()) {
             </div>
         <?php
         }
-        ?>
 
-        <!-- <div class="page-links">
-            <h2 class="page-links__title"><a href="#">About Us</a></h2>
-            <ul class="min-list">
-                <li class="current_page_item"><a href="#">Our History</a></li>
-                <li><a href="#">Our Goals</a></li>
-            </ul>
-        </div> -->
+        $children_pages = get_pages([
+            'child_of' => get_the_ID(),
+        ]);
+
+        if ($parent_post_id || $children_pages) {
+        ?>
+            <div class="page-links">
+                <h2 class="page-links__title"><a href="<?php echo get_permalink($parent_post_id) ?>"><?php echo get_the_title($parent_post_id) ?></a></h2>
+                <ul class="min-list">
+                    <?php
+                    $find_children_of = (bool) $parent_post_id ? $parent_post_id : get_the_ID();
+
+                    wp_list_pages([
+                        'title_li' => null,
+                        'child_of' => $find_children_of,
+                        'sort_column' => 'menu_order',
+                    ]);
+                    ?>
+                </ul>
+            </div>
+        <?php
+        }
+        ?>
 
         <div class="generic-content">
             <?php the_content(); ?>
