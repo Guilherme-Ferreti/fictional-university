@@ -21,11 +21,11 @@ get_header();
 
             $homepageEvents = new WP_Query([
                 'post_type' => 'event',
-                'posts_per_page' => -1,
-                'meta_key' => 'event_date',
-                'orderby' => 'meta_value_num',
-                'order' => 'ASC',
-                'meta_query' => [
+                'posts_per_page' => 2,
+                'meta_key' => 'event_date',     // Custom field we want to use for ordering
+                'orderby' => 'meta_value_num',  // Tells WordPress that the field should be ordered numerically
+                'order' => 'ASC',               // Order direction (ASC, DESC),
+                'meta_query' => [               // Custom where query to use
                     [
                         'key' => 'event_date',
                         'compare' => '>=',
