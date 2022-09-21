@@ -6,6 +6,7 @@ function university_post_types() {
         'supports'     => ['title', 'editor', 'excerpt'],
         'rewrite'      => [
             'slug' => 'events',
+            'with_front' => false, // True if the URL should be prepended with post type URI (Ex: /posts/events/event-123)
         ],
         'has_archive' => true,
         'public'      => true,
@@ -24,6 +25,7 @@ function university_post_types() {
         'supports'     => ['title', 'editor'],
         'rewrite'      => [
             'slug' => 'programs',
+            'with_front' => false,
         ],
         'has_archive' => true,
         'public'      => true,
@@ -35,6 +37,23 @@ function university_post_types() {
             'singular_name' => 'Program',
         ],
         'menu_icon' => 'dashicons-awards',
+    ]);
+
+    register_post_type('professor', [
+        'show_in_rest' => true,
+        'supports'     => ['title', 'editor'],
+        'rewrite'      => [
+            'with_front' => false,
+        ],
+        'public'      => true,
+        'labels'      => [
+            'name'          => 'Professor',
+            'add_new_item'  => 'Add New Professor',
+            'edit_item'     => 'Edit Professor',
+            'all_items'     => 'All Professor',
+            'singular_name' => 'Professor',
+        ],
+        'menu_icon' => 'dashicons-welcome-learn-more',
     ]);
 }
 

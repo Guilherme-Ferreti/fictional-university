@@ -30,6 +30,41 @@ while (have_posts()) {
         <?php
         $today = date('Ymd');
 
+        $relatedProfessors = new WP_Query([
+            'post_type' => 'professor',
+            'posts_per_page' => -1,
+            'orderby' => 'title',  // Tells WordPress that the field should be ordered numerically
+            'order' => 'ASC',               // Order direction (ASC, DESC),
+            'meta_query' => [               // Custom where query to use
+                [
+                    'key' => 'related_programs',
+                    'compare' => 'LIKE',
+                    'value' => '"' . get_the_ID() . '"', // Checks for the ID in serialized related programs array 
+                ],
+            ],
+        ]);
+
+        if ($relatedProfessors->have_posts()) {
+        ?>
+            <hr class="section-break">
+            <h2 class="headline headline--medium"><?php get_the_title(); ?> Professors</h2>
+
+            <?php
+            while ($relatedProfessors->have_posts()) {
+                $relatedProfessors->the_post();
+            ?>
+                <li><a href="<?php echo get_the_permalink(); ?>"><?php echo get_the_title(); ?></a></li>
+            <?php
+            }
+            wp_reset_postdata();
+            ?>
+        <?php
+        }
+        ?>
+
+        <?php
+        $today = date('Ymd');
+
         $upcomingEvents = new WP_Query([
             'post_type' => 'event',
             'posts_per_page' => 2,
