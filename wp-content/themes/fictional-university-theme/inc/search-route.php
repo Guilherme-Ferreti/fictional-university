@@ -10,18 +10,31 @@ function universityRegisterSearch() {
 }
 
 function universitySearchResults($data) {
-    $professors = new WP_Query([
-        'post_type' => 'professor',
+    $mainQuery = new WP_Query([
+        'post_type' => ['post', 'page', 'professor', 'program', 'campus', 'event'],
         's' => sanitize_text_field($data['term']),
     ]);
 
-    $results = [];
+    $results = [
+        'generalInfo' => [],
+        'professors'  => [],
+        'programs'    => [],
+        'events'      => [],
+        'campuses'    => [],
+    ];
 
-    while ($professors->have_posts()) {
-        $professors->the_post();
+    while ($mainQuery->have_posts()) {
+        $mainQuery->the_post();
 
-        $results[] = [
-            'id'        => get_the_ID(),
+        $type = match (get_post_type()) {
+            'page', 'post' => 'generalInfo',
+            'professor'    => 'professors',
+            'program'      => 'programs',
+            'event'        => 'events',
+            'campus'       => 'campuses',
+        };
+
+        $results[$type][] = [
             'title'     => get_the_title(),
             'permalink' => get_the_permalink(),
         ];
