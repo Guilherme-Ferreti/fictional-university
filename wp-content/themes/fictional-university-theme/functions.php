@@ -57,7 +57,7 @@ function university_features() {
 add_action('after_setup_theme', 'university_features');
 
 function university_adjust_queries($query) {
-    if (!is_admin() && is_post_type_archive('event') && is_main_query()) {
+    if (!is_admin() && is_post_type_archive('event') && $query->is_main_query()) {
         $today = date('Ymd');
         
         $query->set('meta_key', 'event_date');
@@ -73,10 +73,14 @@ function university_adjust_queries($query) {
         ]);
     }
 
-    if (!is_admin() && is_post_type_archive('program') && is_main_query()) {
+    if (!is_admin() && is_post_type_archive('program') && $query->is_main_query()) {
         $query->set('posts_per_page', -1);
         $query->set('orderby', 'title');
         $query->set('order', 'ASC');
+    }
+
+    if (!is_admin() && is_post_type_archive('campus') && $query->is_main_query()) {
+        $query->set('posts_per_page', -1);
     }
 }
 

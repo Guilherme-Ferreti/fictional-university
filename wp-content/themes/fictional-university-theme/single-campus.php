@@ -35,9 +35,9 @@ while (have_posts()) {
         $relatedPrograms = new WP_Query([
             'post_type' => 'program',
             'posts_per_page' => -1,
-            'orderby' => 'title', 
-            'order' => 'ASC',               
-            'meta_query' => [               
+            'orderby' => 'title',
+            'order' => 'ASC',
+            'meta_query' => [
                 [
                     'key' => 'related_campus',
                     'compare' => 'LIKE',
@@ -66,47 +66,6 @@ while (have_posts()) {
                 wp_reset_postdata();
                 ?>
             </ul>
-
-        <?php
-        }
-
-        $today = date('Ymd');
-
-        $upcomingEvents = new WP_Query([
-            'post_type' => 'event',
-            'posts_per_page' => 2,
-            'meta_key' => 'event_date',     // Custom field we want to use for ordering
-            'orderby' => 'meta_value_num',  // Tells WordPress that the field should be ordered numerically
-            'order' => 'ASC',               // Order direction (ASC, DESC),
-            'meta_query' => [               // Custom where query to use
-                [
-                    'key' => 'event_date',
-                    'compare' => '>=',
-                    'value' => $today,
-                    'type' => 'numeric',
-                ],
-                [
-                    'key' => 'related_programs',
-                    'compare' => 'LIKE',
-                    'value' => '"' . get_the_ID() . '"', // Checks for the ID in serialized related programs array 
-                ],
-            ],
-        ]);
-
-        if ($upcomingEvents->have_posts()) {
-        ?>
-            <hr class="section-break">
-            <h2 class="headline headline--medium">Upcoming <?php echo get_the_title(); ?> Events</h2>
-
-            <?php
-            while ($upcomingEvents->have_posts()) {
-                $upcomingEvents->the_post();
-
-                get_template_part('template-parts/content-event');
-            }
-
-            wp_reset_postdata();
-            ?>
         <?php
         }
         ?>
