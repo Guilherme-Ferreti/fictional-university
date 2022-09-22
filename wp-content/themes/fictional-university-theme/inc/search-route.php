@@ -9,6 +9,23 @@ function universityRegisterSearch() {
     ]);
 }
 
-function universitySearchResults () {
-    return 'UHU';
+function universitySearchResults($data) {
+    $professors = new WP_Query([
+        'post_type' => 'professor',
+        's' => sanitize_text_field($data['term']),
+    ]);
+
+    $results = [];
+
+    while ($professors->have_posts()) {
+        $professors->the_post();
+
+        $results[] = [
+            'id'        => get_the_ID(),
+            'title'     => get_the_title(),
+            'permalink' => get_the_permalink(),
+        ];
+    }
+
+    return $results;
 }
