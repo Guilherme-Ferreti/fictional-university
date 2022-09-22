@@ -10,46 +10,55 @@ while (have_posts()) {
     <div class="container container--narrow page-section">
         <div class="metabox metabox--position-up metabox--with-home-link">
             <p>
-                <a class="metabox__blog-home-link" href="<?php echo get_post_type_archive_link('program'); ?>">
+                <a class="metabox__blog-home-link" href="<?php echo get_post_type_archive_link('campus'); ?>">
                     <i class="fa fa-home" aria-hidden="true"></i>
-                    All Programs
+                    All Campuses
                 </a>
                 <span class="metabox__main"><?php the_title(); ?></span>
             </p>
         </div>
         <div class="generic-content"><?php the_content(); ?></div>
 
+        <div class="acf-map">
+            <?php
+            $mapLocation = get_field('map_location');
+            ?>
+            <div class="marker" data-lat="<?php echo $mapLocation['lat']; ?>" data-lng="<?php echo $mapLocation['lng']; ?>">
+                <h3><?php the_title(); ?></h3>
+                <?php echo $mapLocation['address'] ?? ''; ?>
+            </div>
+        </div>
+
         <?php
         $today = date('Ymd');
 
-        $relatedProfessors = new WP_Query([
-            'post_type' => 'professor',
+        $relatedPrograms = new WP_Query([
+            'post_type' => 'program',
             'posts_per_page' => -1,
-            'orderby' => 'title',  // Tells WordPress that the field should be ordered numerically
-            'order' => 'ASC',               // Order direction (ASC, DESC),
-            'meta_query' => [               // Custom where query to use
+            'orderby' => 'title', 
+            'order' => 'ASC',               
+            'meta_query' => [               
                 [
-                    'key' => 'related_programs',
+                    'key' => 'related_campus',
                     'compare' => 'LIKE',
                     'value' => '"' . get_the_ID() . '"', // Checks for the ID in serialized related programs array 
                 ],
             ],
         ]);
 
-        if ($relatedProfessors->have_posts()) {
+        if ($relatedPrograms->have_posts()) {
         ?>
             <hr class="section-break">
-            <h2 class="headline headline--medium"><?php get_the_title(); ?> Professors</h2>
+            <h2 class="headline headline--medium">Programs Available At This Campus</h2>
 
-            <ul>
+            <ul class="min-list link-list">
                 <?php
-                while ($relatedProfessors->have_posts()) {
-                    $relatedProfessors->the_post();
+                while ($relatedPrograms->have_posts()) {
+                    $relatedPrograms->the_post();
                 ?>
-                    <li class="professor-card__list-item">
-                        <a class="professor-card" href="<?php echo get_the_permalink(); ?>">
-                            <img class="professor-card__image" src="<?php the_post_thumbnail_url('professor-landscape'); ?>" alt="">
-                            <span class="professor-card__name"><?php the_title(); ?></span>
+                    <li>
+                        <a href="<?php echo get_the_permalink(); ?>">
+                            <?php the_title(); ?>
                         </a>
                     </li>
                 <?php
@@ -97,23 +106,7 @@ while (have_posts()) {
             }
 
             wp_reset_postdata();
-        }
-
-        $relatedCampuses = get_field('related_campus');
-
-        if ($relatedCampuses) {
             ?>
-            <hr class="section-break">
-            <h2 class="headline headline--medium"><?php the_title(); ?> is Available At These Campuses:</h2>
-            <ul class="min-list link-list">
-                <?php
-                foreach ($relatedCampuses as $campus) {
-                ?>
-                    <li><a href="<?php get_the_permalink($campus); ?>"><?php echo get_the_title($campus); ?></a></li>
-                <?php
-                }
-                ?>
-            </ul>
         <?php
         }
         ?>
