@@ -22,7 +22,7 @@ function university_post_types() {
 
     register_post_type('program', [
         'show_in_rest' => true,
-        'supports'     => ['title', 'editor'],
+        'supports'     => ['title'],
         'rewrite'      => [
             'slug' => 'programs',
             'with_front' => false,
