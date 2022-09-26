@@ -52,7 +52,7 @@ function university_post_types() {
             'name'          => 'Professor',
             'add_new_item'  => 'Add New Professor',
             'edit_item'     => 'Edit Professor',
-            'all_items'     => 'All Professor',
+            'all_items'     => 'All Professors',
             'singular_name' => 'Professor',
         ],
         'menu_icon' => 'dashicons-welcome-learn-more',
@@ -77,6 +77,21 @@ function university_post_types() {
             'singular_name' => 'Campus',
         ],
         'menu_icon' => 'dashicons-location-alt',
+    ]);
+
+    register_post_type('note', [
+        'show_in_rest' => true,
+        'supports'     => ['title', 'editor'],
+        'public'       => false,
+        'show_ui'      => true,
+        'labels'       => [
+            'name'          => 'Notes',
+            'add_new_item'  => 'Add New Note',
+            'edit_item'     => 'Edit Note',
+            'all_items'     => 'All Notes',
+            'singular_name' => 'Note',
+        ],
+        'menu_icon' => 'dashicons-welcome-write-blog',
     ]);
 }
 
