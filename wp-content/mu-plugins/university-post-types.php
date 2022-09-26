@@ -80,11 +80,13 @@ function university_post_types() {
     ]);
 
     register_post_type('note', [
-        'show_in_rest' => true,
-        'supports'     => ['title', 'editor'],
-        'public'       => false,
-        'show_ui'      => true,
-        'labels'       => [
+        'show_in_rest'    => true,
+        'supports'        => ['title', 'editor'],
+        'public'          => false,
+        'capability_type' => 'note',
+        'map_meta_cap'    => true,
+        'show_ui'         => true,
+        'labels'          => [
             'name'          => 'Notes',
             'add_new_item'  => 'Add New Note',
             'edit_item'     => 'Edit Note',
