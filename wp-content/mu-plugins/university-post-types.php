@@ -8,9 +8,11 @@ function university_post_types() {
             'slug' => 'events',
             'with_front' => false, // True if the URL should be prepended with post type URI (Ex: /posts/events/event-123)
         ],
-        'has_archive' => true,
-        'public'      => true,
-        'labels'      => [
+        'capability_type' => 'event',
+        'map_meta_cap'    => true,
+        'has_archive'     => true,
+        'public'          => true,
+        'labels'          => [
             'name'          => 'Events',
             'add_new_item'  => 'Add New Event',
             'edit_item'     => 'Edit Event',
@@ -63,9 +65,11 @@ function university_post_types() {
             'slug' => 'campuses',
             'with_front' => false,
         ],
-        'has_archive' => true,
-        'public'      => true,
-        'labels'      => [
+        'capability_type' => 'campus',
+        'map_meta_cap'    => true,
+        'has_archive'     => true,
+        'public'          => true,
+        'labels'          => [
             'name'          => 'Campuses',
             'add_new_item'  => 'Add New Campus',
             'edit_item'     => 'Edit Campus',
